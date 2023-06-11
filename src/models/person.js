@@ -4,14 +4,14 @@ const {
 } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Person extends Model {
     static associate(models) {
       // Define associations here
     }
   }
 
-  User.init({
-    user_id: {
+  Person.init({
+    person_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
@@ -29,10 +29,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'User',
-    tableName: 'users',
+    modelName: 'Person',
+    tableName: 'persons',
     timestamps: false
   });
 
-  return User;
+  return Person;
 };

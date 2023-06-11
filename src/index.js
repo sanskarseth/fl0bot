@@ -1,5 +1,5 @@
 const express = require('express')
-const { sequelize, Chat, User } = require('./models');
+const { sequelize, Chat, Person } = require('./models');
 const app = express()
 const port = process.env.PORT ?? 3000;
 
@@ -7,13 +7,13 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.post('/users/', async (req, res) => {
-  const user = req.body;
+app.post('/persons/', async (req, res) => {
+  const person = req.body;
   try {
-    const dbUser = await User.create(user);
+    const dbUser = await Person.create(person);
     res.json(dbUser);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to create user' });
+    res.status(500).json({ error: 'Failed to create Person' });
   }
 });
 

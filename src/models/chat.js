@@ -16,11 +16,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    user_id: {
+    person_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'User',
-        key: 'user_id'
+        model: 'Person',
+        key: 'person_id'
       }
     },
     role: {
