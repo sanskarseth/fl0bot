@@ -1,5 +1,5 @@
 const express = require('express')
-const { sequelize, Product } = require('./models');
+const { sequelize, Product, Chat, User } = require('./models');
 const app = express()
 const port = process.env.PORT ?? 3000;
 
@@ -11,6 +11,27 @@ app.get('/products', async (req, res) => {
   const products = await Product.findAll();
   res.json(products);
 })
+
+app.post('/users/', async (req, res) => {
+  const user = req.body;
+  try {
+    const dbUser = await User.create(user);
+    res.json(dbUser);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create user' });
+  }
+});
+
+app.post('/chats/', async (req, res) => {
+  const chat = req.body;
+  try {
+    const dbChat = await Chat.create(chat);
+    res.json(dbChat);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create chat' });
+  }
+});
+
 
 app.listen(port, async () => {
   console.log(`Example app listening on port ${port}`)
