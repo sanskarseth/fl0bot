@@ -51,6 +51,16 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
+// Synchronize models with the database
+async function syncDatabase() {
+  try {
+    await sequelize.sync({ force: false });
+    console.log('Tables created (if not exist) and database synchronized successfully.');
+  } catch (error) {
+    console.error('Unable to synchronize the database:', error);
+  }
+}
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.syncDatabase = syncDatabase;
