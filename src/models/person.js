@@ -1,38 +1,27 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
 
-module.exports = (sequelize, DataTypes) => {
-  class Person extends Model {
-    static associate(models) {
-      // Define associations here
-    }
-  }
+const { Sequelize, DataTypes } = require('sequelize');
 
-  Person.init({
-    person_id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
+module.exports = (sequelize) => {
+  const Person = sequelize.define(
+    'Person',
+    {
+      person_id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      // Add other person attributes as needed
     },
-    name: {
-      type: DataTypes.STRING
-    },
-    time_created: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
-    },
-    time_updated: {
-      type: DataTypes.DATE,
-      onUpdate: DataTypes.NOW
+    {
+      tableName: 'persons', // Specify the table name explicitly if different from the model name
+      timestamps: false, // Disable timestamps (createdAt, updatedAt)
     }
-  }, {
-    sequelize,
-    modelName: 'Person',
-    tableName: 'persons',
-    timestamps: false
-  });
+  );
 
   return Person;
 };
