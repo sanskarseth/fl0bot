@@ -1,5 +1,6 @@
 const express = require('express')
 const { sequelize, Chat, Person } = require('./models');
+const e = require('express');
 const app = express()
 const port = process.env.PORT ?? 3000;
 
@@ -13,6 +14,7 @@ app.post('/persons/', async (req, res) => {
     const dbUser = await Person.create(person);
     res.json(dbUser);
   } catch (error) {
+    console.log("ERROR",error)
     res.status(500).json({ error: 'Failed to create Person' });
   }
 });

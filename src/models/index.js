@@ -46,7 +46,6 @@ fs
   });
 
 Object.keys(db).forEach(modelName => {
-    print(modelName)
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
