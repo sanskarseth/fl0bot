@@ -1,15 +1,10 @@
 const express = require('express')
-const { sequelize, Product, Chat, User } = require('./models');
+const { sequelize, Chat, User } = require('./models');
 const app = express()
 const port = process.env.PORT ?? 3000;
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
-})
-
-app.get('/products', async (req, res) => {
-  const products = await Product.findAll();
-  res.json(products);
 })
 
 app.post('/users/', async (req, res) => {
@@ -37,6 +32,7 @@ app.listen(port, async () => {
   console.log(`Example app listening on port ${port}`)
   try {
     await sequelize.authenticate();
+    sequelize.options.dialectOptions.ssl = false;
     await sequelize.sync({ force: true});
     console.log('Connection has been established successfully.');
   } catch (error) {
