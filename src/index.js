@@ -31,6 +31,7 @@ app.post('/chats/', async (req, res) => {
 app.listen(port, async () => {
   console.log(`Example app listening on port ${port}`)
   try {
+    await sequelize.sync({ force: false });
     await sequelize.authenticate();
     sequelize.options.dialectOptions.ssl = false;
     await sequelize.sync({ force: true});
