@@ -13,6 +13,7 @@ app.post('/users/', async (req, res) => {
     const dbUser = await User.create(user);
     res.json(dbUser);
   } catch (error) {
+    print("ERROR",error)
     res.status(500).json({ error: 'Failed to create user' });
   }
 });
