@@ -110,24 +110,12 @@ app.post('/chats/:person_id', async (req, res) => {
   }
 });
 
-const { App } = require('@slack/bolt');
+// const { App } = require('@slack/bolt');
 
-const boltApp = new App({
-  token: process.env[config.slack_client],
-  signingSecret: process.env[config.slack_secret],
-});
-
-app.post('/slack/events', async (req, res) => {
-  res.sendStatus(200); // Immediately respond with a 200 OK status to acknowledge the request
-
-  console.log(req.body)
-
-  try {
-    await boltApp.processEvent(req.body);
-  } catch (error) {
-    console.error(`Error processing Slack event: ${error}`);
-  }
-});
+// const boltApp = new App({
+//   token: process.env[config.slack_client],
+//   signingSecret: process.env[config.slack_secret],
+// });
 
 
 app.post('/slack/action-endpoint', async (req, res) => {
@@ -136,42 +124,48 @@ app.post('/slack/action-endpoint', async (req, res) => {
   if (challenge) {
     res.status(200).send(challenge);
   } else {
-    // Handle other event types and trigger actions based on your requirements
-    // Access the event data from the req.body object
-    
-    // Return a successful response
-
-    try {
-      console.log("event called")
-      // await boltApp.processEvent(req.body);
-      console.log(req.body)
-    } catch (error) {
-      console.error(`Error processing Slack event: ${error}`);
-    }
-
-    console.log('Event received Event received')
-
+      try {
+        switch(req.body.type) {
+          case 'app_mention':
+            const response = await handleAppMention(req.body)
+            res.status(200).json({ message: response });
+            break
+          default: 
+            break
+        }
+      } catch (error) {
+        console.error(`Error processing Slack event: ${error}`);
+      }
     res.status(200).json({ message: 'Event received' });
   }
 });
 
+async function handleAppMention(event) {
+
+  const mentionRegex = /<@[\w\d]+>/g; // Regex pattern to match the mention
+  const msg = event.text.replace(mentionRegex, '');
+
+  return msg;
+}
+
+
 
 // Listen for mentions
-boltApp.event('app_mention', async ({ event, say }) => {
-  try {
-    // Perform the API call or any other logic based on the mention event
-    const response = await makeAPICall(); // Replace with your own API call
+// boltApp.event('app_mention', async ({ event, say }) => {
+//   try {
+//     // Perform the API call or any other logic based on the mention event
+//     const response = await makeAPICall(); // Replace with your own API call
 
-    console.log("HIIIIIIIIII")
+//     console.log("HIIIIIIIIII")
 
-    // Reply to the mention with the response
-    await say({
-      text: `API Response: ${response}`,
-    });
-  } catch (error) {
-    console.error(`Error handling app_mention event: ${error}`);
-  }
-});
+//     // Reply to the mention with the response
+//     await say({
+//       text: `API Response: ${response}`,
+//     });
+//   } catch (error) {
+//     console.error(`Error handling app_mention event: ${error}`);
+//   }
+// });
 
 
 app.listen(port, async () => {
@@ -187,13 +181,13 @@ app.listen(port, async () => {
   }
 });
 
-(async () => {
-  await boltApp.start();
-  console.log('Bolt app is running');
-})();
+// (async () => {
+//   await boltApp.start();
+//   console.log('Bolt app is running');
+// })();
 
-async function makeAPICall() {
-  // Perform your API logic here
-  // Return the result to be sent as a reply
-  return 'API call result';
-}
+// async function makeAPICall() {
+//   // Perform your API logic here
+//   // Return the result to be sent as a reply
+//   return 'API call result';
+// }
