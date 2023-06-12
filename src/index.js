@@ -17,6 +17,8 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+const { WebClient } = require('@slack/web-api');
+const { createEventAdapter } = require('@slack/events-api');
 
 const port = process.env.PORT ?? 3000;
 
@@ -28,6 +30,8 @@ app.post('/persons/', async (req, res) => {
   const person = req.body;
   try {
     const dbUser = await Person.create(person);
+    const dbChat = await Chat.create({ person_id: dbUser.person_id, role: 'system', content: process.env[config.bot_system] });
+
     res.json(dbUser);
   } catch (error) {
     console.log("ERROR",error)
@@ -108,6 +112,49 @@ app.post('/chats/:person_id', async (req, res) => {
     res.status(500).json({ error: 'Failed to process chat' });
   }
 });
+
+// Create an instance of the Slack client with your token
+const slackClient = new WebClient(process.env.process.env[config.slack_client]);
+
+// Create an instance of the Slack event adapter
+const slackEvents = createEventAdapter(process.env.process.env[config.slack_secret]);
+
+app.use('/slack/events', slackEvents.requestListener());
+
+
+slackEvents.on('message', async (event) => {
+  try {
+    // Check if the event is a message from a user
+    if (event.type === 'message' && !event.bot_id) {
+      // Process the message and trigger actions based on your requirements
+      const { channel, text } = event;
+      
+      // Example: Reply to the user with a custom message
+      await slackClient.chat.postMessage({
+        channel,
+        text: `You said: ${text}`,
+      });
+    }
+  } catch (error) {
+    console.error('Error handling Slack event:', error);
+  }
+});
+
+
+// app.post('/slack/events', async (request, response) => {
+//   const payload = request.body;
+
+//   if ('challenge' in payload) {
+//     return { challenge: payload.challenge };
+//   } else {
+//     // Process other event types and trigger actions based on your requirements
+//     // You can access the event data from the payload object
+
+//     // Return a successful response
+//     response.status(200).send({ message: 'Event received' });
+//   }
+// });
+
 
 app.listen(port, async () => {
   console.log(`Example app listening on port ${port}`)

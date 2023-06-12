@@ -2,16 +2,25 @@ module.exports = {
   "local": {
     "use_env_variable": "DATABASE_URL",
     "openai_api_key": "OPENAI_API_KEY",
+    "bot_system" : "BOT_SYSTEM",
+    "slack_client" : "SLACK_CLIENT",
+    "slack_secret" : "SLACK_SECRET",
     synchronize: true
   },
   "development": {
     "use_env_variable": "DATABASE_URL",
     "openai_api_key": "OPENAI_API_KEY",
+    "bot_system" : "BOT_SYSTEM",
+    "slack_client" : "SLACK_CLIENT",
+    "slack_secret" : "SLACK_SECRET",
     synchronize: true
   },
   "production": {
     "use_env_variable": "DATABASE_URL",
     "openai_api_key": "OPENAI_API_KEY",
+    "bot_system" : "BOT_SYSTEM",
+    "slack_client" : "SLACK_CLIENT",
+    "slack_secret" : "SLACK_SECRET",
     synchronize: true
   }
 }
