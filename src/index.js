@@ -1,9 +1,17 @@
+require('dotenv').config();
 const express = require('express')
 const { sequelize, Chat, Person } = require('./models');
 const e = require('express');
 
 const app = express()
 app.use(express.json());
+
+const { openai } = require('@openai/api');
+
+const openai = new openai({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
 
 const port = process.env.PORT ?? 3000;
 
@@ -35,6 +43,41 @@ app.post('/chats/', async (req, res) => {
   }
 });
 
+app.post('/chats/:user_id', async (req, res) => {
+  const { user_id } = req.params;
+  const { query } = req.body;
+
+  try {
+    const dbUser = await User.findByPk(user_id);
+
+    if (!dbUser) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    const chats = await Chat.findAll({ where: { user_id }, order: [['time_created', 'ASC']] });
+
+    const chatsGpt = chats.map((item) => ({ role: item.role, content: item.content }));
+    chatsGpt.push({ role: 'user', content: query.query });
+
+    const response = await openai.ChatCompletion.create({
+      model: 'gpt-3.5-turbo',
+      messages: chatsGpt,
+    });
+
+    const dbChat1 = await Chat.create({ user_id, role: 'user', content: query.query });
+
+    const dbChat = await Chat.create({
+      user_id,
+      role: 'assistant',
+      content: response.choices[0].message.content,
+    });
+
+    res.json(response.choices[0].message.content);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to process chat' });
+  }
+});
 
 app.listen(port, async () => {
   console.log(`Example app listening on port ${port}`)
