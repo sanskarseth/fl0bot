@@ -126,9 +126,10 @@ app.post('/slack/action-endpoint', async (req, res) => {
   } else {
       try {
         console.log(req.body)
-        switch(req.body.type) {
+        switch(req.body.event.type) {
           case 'app_mention':
             const response = await handleAppMention(req.body)
+            console.log(response)
             res.status(200).json({ message: response });
             break
           default: 
@@ -146,7 +147,40 @@ async function handleAppMention(event) {
   const mentionRegex = /<@[\w\d]+>/g; // Regex pattern to match the mention
   const msg = event.text.replace(mentionRegex, '');
 
-  return msg;
+  const { person_id } = event.user;
+  const { query } = msg;
+
+  try {
+    const dbUser = await Person.findOne({ where: { person_id: person_id }, raw: true });
+
+    if (!dbUser) {
+      const dbUser = await Person.create({person_id, name: person_id});
+      const dbChat = await Chat.create({ person_id: dbUser.person_id, role: 'system', content: process.env[config.bot_system] });
+    }
+
+    const chats = await Chat.findAll({ where: { person_id }, order: [['time_created', 'DESC']], limit: 5, raw: true });
+
+    const chatsGpt = chats.map((item) => ({ role: item.role, content: item.content }));
+    chatsGpt.push({ role: 'user', content: query });
+
+    const response = await openai.createChatCompletion({
+      model: 'gpt-3.5-turbo',
+      messages: chatsGpt,
+    });
+
+    const dbChat1 = await Chat.create({ person_id, role: 'user', content: query });
+
+    const dbChat = await Chat.create({
+      person_id,
+      role: 'assistant',
+      content: response.data.choices[0].message.content,
+    });
+
+    return response.data.choices[0].message.content ;
+  } catch (error) {
+    console.log("ERROR",error)
+    return 'Failed to process chat';
+  }
 }
 
 
