@@ -57,7 +57,7 @@ app.post('/chats/', async (req, res) => {
 
 app.get('/chats/', async (req, res) => {
   try {
-    const chats = await Chat.findAll();
+    const chats = await Chat.findAll({raw: true});
     return res.json(chats)
   } catch (error) {
     console.log("ERROR",error)
@@ -70,14 +70,14 @@ app.post('/chats/:person_id', async (req, res) => {
   const { query } = req.body;
 
   try {
-    const dbUser = await Person.findOne({ where: { person_id: person_id } });
+    const dbUser = await Person.findOne({ where: { person_id: person_id }, raw: true });
 
     if (!dbUser) {
       res.status(404).json({ error: 'User not found' });
       return;
     }
 
-    const chats = await Chat.findAll({ where: { person_id }, order: [['time_created', 'ASC']] });
+    const chats = await Chat.findAll({ where: { person_id }, order: [['time_created', 'ASC']], raw: true });
 
     const chatsGpt = chats.map((item) => ({ role: item.role, content: item.content }));
     chatsGpt.push({ role: 'user', content: query.query });
