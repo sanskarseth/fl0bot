@@ -30,6 +30,7 @@ app.post('/slack/action-endpoint', async (req, res) => {
           case 'app_mention':
             const response = await handleAppMention(req.body)
             await axios.post(process.env[config.slack_webhook], {text: response});
+            res.status(200).json({ message: 'Success' });
             break
           default:
             res.status(400).json({ message: 'Bad Request' });
