@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
         defaultValue: Sequelize.UUIDV4,
       },
       person_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.STRING,
         allowNull: false,
         references: {
           model: 'persons', // Referencing the 'persons' table
