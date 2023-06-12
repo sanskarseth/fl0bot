@@ -9,6 +9,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/persons/', async (req, res) => {
+  console.log("REQ BODY", req.body)
   const person = req.body;
   try {
     console.log("Person", person)
