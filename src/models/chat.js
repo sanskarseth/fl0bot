@@ -24,7 +24,7 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
       },
       content: {
-        type: DataTypes.STRING(500)
+        type: DataTypes.STRING(10000)
       },
       time_created: {
         type: DataTypes.DATE,
