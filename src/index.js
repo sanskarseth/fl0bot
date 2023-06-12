@@ -30,6 +30,7 @@ app.post('/chats/', async (req, res) => {
     const dbChat = await Chat.create(chat);
     res.json(dbChat);
   } catch (error) {
+    console.log("ERROR",error)
     res.status(500).json({ error: 'Failed to create chat' });
   }
 });
