@@ -202,7 +202,7 @@ async function runSlackBotApp() {
 (async () => {
   try {
     // Run the Slack Bolt app in the background
-    runSlackBotApp();
+    await runSlackBotApp();
 
     // Run the Express app
     app();
