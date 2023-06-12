@@ -71,7 +71,7 @@ app.post('/chats/:person_id', async (req, res) => {
   const { person_id } = req.params;
   const { query } = req.body;
 
-  console.log("TOKENNN", process.env[config.openai_api_key])
+  // console.log("TOKENNN", process.env[config.openai_api_key])
 
   try {
     const dbUser = await Person.findOne({ where: { person_id: person_id }, raw: true });
@@ -84,14 +84,14 @@ app.post('/chats/:person_id', async (req, res) => {
     const chats = await Chat.findAll({ where: { person_id }, order: [['time_created', 'ASC']], raw: true });
 
     const chatsGpt = chats.map((item) => ({ role: item.role, content: item.content }));
-    chatsGpt.push({ role: 'user', content: query.query });
+    chatsGpt.push({ role: 'user', content: query });
 
     const response = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
       messages: chatsGpt,
     });
 
-    const dbChat1 = await Chat.create({ person_id, role: 'user', content: query.query });
+    const dbChat1 = await Chat.create({ person_id, role: 'user', content: query });
 
     const dbChat = await Chat.create({
       person_id,
