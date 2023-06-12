@@ -110,12 +110,26 @@ app.post('/chats/:person_id', async (req, res) => {
   }
 });
 
-const { App } = require('@slack/bolt');
-
-const slackBotApp = new App({
-  token: process.env[config.slack_client],
-  signingSecret: process.env[config.slack_secret],
+app.post('/slack/action-endpoint', (req, res) => {
+  const { challenge } = req.body;
+  
+  if (challenge) {
+    res.status(200).send(challenge);
+  } else {
+    // Handle other event types and trigger actions based on your requirements
+    // Access the event data from the req.body object
+    
+    // Return a successful response
+    res.status(200).json({ message: 'Event received' });
+  }
 });
+
+// const { App } = require('@slack/bolt');
+
+// const slackBotApp = new App({
+//   token: process.env[config.slack_client],
+//   signingSecret: process.env[config.slack_secret],
+// });
 
 
 // slackBotApp.event('message', async ({ event }) => {
@@ -153,11 +167,11 @@ app.listen(port, async () => {
   }
 });
 
-(async () => {
-  try {
-    await slackBotApp.start();
-    console.log('Slack bot is running');
-  } catch (error) {
-    console.error('Error starting Slack bot:', error);
-  }
-})();
+// (async () => {
+//   try {
+//     await slackBotApp.start();
+//     console.log('Slack bot is running');
+//   } catch (error) {
+//     console.error('Error starting Slack bot:', error);
+//   }
+// })();
