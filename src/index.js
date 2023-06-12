@@ -134,8 +134,10 @@ const boltApp = new App({
 app.post('/slack/events', (req, res) => {
   res.sendStatus(200); // Immediately respond with a 200 OK status to acknowledge the request
 
+  console.log(req.body)
+  
   try {
-    boltApp.processEvent(req.body.json());
+    boltApp.processEvent(req.body);
   } catch (error) {
     console.error(`Error processing Slack event: ${error}`);
   }
