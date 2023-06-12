@@ -125,6 +125,7 @@ app.post('/slack/action-endpoint', async (req, res) => {
     res.status(200).send(challenge);
   } else {
       try {
+        console.log(req.body)
         switch(req.body.type) {
           case 'app_mention':
             const response = await handleAppMention(req.body)
