@@ -29,16 +29,7 @@ app.post('/slack/action-endpoint', async (req, res) => {
         switch(req.body.event.type) {
           case 'app_mention':
             const response = await handleAppMention(req.body)
-            
-            await axios
-            .post(process.env[config.slack_webhook], {text: response})
-            .then(() => {
-              res.status(200).json({ message: 'Message sent successfully' });
-            })
-            .catch((error) => {
-              console.log("ERROR",error)
-              res.status(200).json({ message: 'Failed to send message' });
-            });
+            await axios.post(process.env[config.slack_webhook], {text: response});
             break
           default:
             res.status(400).json({ message: 'Bad Request' });
