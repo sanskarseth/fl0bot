@@ -45,10 +45,6 @@ fs
     db[model.name] = model;
   });
 
-
-  const Person = require('./person')(sequelize, Sequelize.DataTypes);
-  db['Person'] = Person;
-
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
