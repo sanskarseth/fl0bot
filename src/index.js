@@ -53,7 +53,7 @@ app.post('/chats/:person_id', async (req, res) => {
   console.log(req.params, req.body)
 
   try {
-    const dbUser = await Person.findByPk(person_id);
+    const dbUser = await Person.findOne({ where: { person_id: person_id } });
 
     if (!dbUser) {
       res.status(404).json({ error: 'User not found' });
