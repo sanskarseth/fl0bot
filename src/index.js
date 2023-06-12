@@ -53,7 +53,7 @@ async function handleAppMention({event}) {
     const userExists = await Chat.findOne({ where: { person_id: person_id }, raw: true });
 
     if (!userExists) {
-      const dbChat = await Chat.create({ person_id: dbUser.person_id, role: 'system', content: process.env[config.bot_system] });
+      const dbChat = await Chat.create({ person_id: person_id, role: 'system', content: process.env[config.bot_system] });
     }
 
     const chats = await Chat.findAll({ where: { person_id }, order: [['time_created', 'DESC']], limit: 5, raw: true });
