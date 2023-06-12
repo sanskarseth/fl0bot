@@ -15,7 +15,6 @@ app.post('/persons/', async (req, res) => {
   console.log("REQ BODY", req.body)
   const person = req.body;
   try {
-    console.log("Person", person)
     const dbUser = await Person.create(person);
     res.json(dbUser);
   } catch (error) {
@@ -25,6 +24,7 @@ app.post('/persons/', async (req, res) => {
 });
 
 app.post('/chats/', async (req, res) => {
+  console.log("REQ BODY", req.body)
   const chat = req.body;
   try {
     const dbChat = await Chat.create(chat);
