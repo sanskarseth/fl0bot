@@ -110,12 +110,12 @@ app.post('/chats/:person_id', async (req, res) => {
   }
 });
 
-// const { App } = require('@slack/bolt');
+const { App } = require('@slack/bolt');
 
-// const slackBotApp = new App({
-//   token: process.env[config.slack_client],
-//   signingSecret: process.env[config.slack_secret],
-// });
+const slackBotApp = new App({
+  token: process.env[config.slack_client],
+  signingSecret: process.env[config.slack_secret],
+});
 
 
 // slackBotApp.event('message', async ({ event }) => {
@@ -153,11 +153,11 @@ app.listen(port, async () => {
   }
 })
 
-// (async () => {
-//   try {
-//     await slackBotApp.start();
-//     console.log('Slack bot is running');
-//   } catch (error) {
-//     console.error('Error starting Slack bot:', error);
-//   }
-// })();
+(async () => {
+  try {
+    await slackBotApp.start();
+    console.log('Slack bot is running');
+  } catch (error) {
+    console.error('Error starting Slack bot:', error);
+  }
+})();
