@@ -112,29 +112,20 @@ app.post('/chats/:person_id', async (req, res) => {
   }
 });
 
-// const slackBotApp = new App({
-//   token: process.env[config.slack_client],
-//   signingSecret: process.env[config.slack_secret],
-// });
+const slackBotApp = new App({
+  token: process.env[config.slack_client],
+  signingSecret: process.env[config.slack_secret],
+});
 
 
-// slackEvents.on('message', async (event) => {
-//   try {
-//     // Check if the event is a message from a user
-//     if (event.type === 'message' && !event.bot_id) {
-//       // Process the message and trigger actions based on your requirements
-//       const { channel, text } = event;
-      
-//       // Example: Reply to the user with a custom message
-//       await slackClient.chat.postMessage({
-//         channel,
-//         text: `You said: ${text}`,
-//       });
-//     }
-//   } catch (error) {
-//     console.error('Error handling Slack event:', error);
-//   }
-// });
+slackBotApp.event('message', async ({ event }) => {
+  try {
+    // Handle the Slack event here
+    console.log('Received a message:', event.text);
+  } catch (error) {
+    console.error('Error handling Slack event:', error);
+  }
+});
 
 // app.post('/slack/events', (req, res) => {
 //   const { challenge } = req.body;
@@ -177,40 +168,11 @@ app.listen(port, async () => {
   }
 })
 
-async function runSlackBotApp() {
-
-  console.log(process.env[config.slack_client])
-  console.log(process.env[config.slack_secret])
-
-  // Create a new Slack Bolt app instance
-  const slackBotApp = new App({
-    token: process.env[config.slack_client],
-    signingSecret: process.env[config.slack_secret],
-  });
-
-  // Define Slack Bolt app's functionality
-  slackBotApp.command('/hello', async ({ command, ack, say }) => {
-    try {
-      await ack();
-      await say(`Hello, ${command.user_name}!`);
-    } catch (error) {
-      console.error(error);
-    }
-  });
-
-  // Start the Slack Bolt app
-  await slackBotApp.start();
-  console.log('Slack bot is running!');
-}
-
 (async () => {
   try {
-    // Run the Slack Bolt app in the background
-    await runSlackBotApp();
-
-    // Run the Express app
-    app();
+    await slackBotApp.start();
+    console.log('Slack bot is running');
   } catch (error) {
-    console.error('Error occurred:', error);
+    console.error('Error starting Slack bot:', error);
   }
 })();
