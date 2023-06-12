@@ -23,7 +23,6 @@ app.get('/', (req, res) => {
 })
 
 app.post('/persons/', async (req, res) => {
-  console.log("REQ BODY", req.body)
   const person = req.body;
   try {
     const dbUser = await Person.create(person);
@@ -34,8 +33,17 @@ app.post('/persons/', async (req, res) => {
   }
 });
 
+app.get('/persons/', async (req, res) => {
+  try {
+    const persons = await Person.findAll();
+    return res.json(persons)
+  } catch (error) {
+    console.log("ERROR",error)
+    res.status(500).json({ error: 'Failed to get persons' });
+  }
+});
+
 app.post('/chats/', async (req, res) => {
-  console.log("REQ BODY", req.body)
   const chat = req.body;
   try {
     const dbChat = await Chat.create(chat);
@@ -46,13 +54,19 @@ app.post('/chats/', async (req, res) => {
   }
 });
 
+app.get('/chats/', async (req, res) => {
+  try {
+    const chats = await Chat.findAll();
+    return res.json(chats)
+  } catch (error) {
+    console.log("ERROR",error)
+    res.status(500).json({ error: 'Failed to get chats' });
+  }
+});
+
 app.post('/chats/:person_id', async (req, res) => {
   const { person_id } = req.params;
   const { query } = req.body;
-
-  const users = await Person.findAll();
-
-  return res.json(users)
 
   try {
     const dbUser = await Person.findOne({ where: { person_id: person_id } });
