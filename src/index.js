@@ -178,6 +178,10 @@ app.listen(port, async () => {
 })
 
 async function runSlackBotApp() {
+
+  console.log(process.env[config.slack_client])
+  console.log(process.env[config.slack_secret])
+
   // Create a new Slack Bolt app instance
   const slackBotApp = new App({
     token: process.env[config.slack_client],
