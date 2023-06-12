@@ -84,7 +84,7 @@ app.post('/chats/:person_id', async (req, res) => {
     const chatsGpt = chats.map((item) => ({ role: item.role, content: item.content }));
     chatsGpt.push({ role: 'user', content: query.query });
 
-    const response = await openai.ChatCompletion.create({
+    const response = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
       messages: chatsGpt,
     });
