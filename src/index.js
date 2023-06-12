@@ -1,8 +1,10 @@
 const express = require('express')
 const { sequelize, Chat, Person } = require('./models');
 const e = require('express');
-app.use(express.json());
+
 const app = express()
+app.use(express.json());
+
 const port = process.env.PORT ?? 3000;
 
 app.get('/', (req, res) => {
