@@ -66,13 +66,10 @@ async function handleAppMention({event}) {
       messages: chatsGpt,
     });
 
-    const dbChat1 = await Chat.create({ person_id, role: 'user', content: query });
-
-    const dbChat = await Chat.create({
-      person_id,
-      role: 'assistant',
-      content: response.data.choices[0].message.content,
-    });
+    await Chat.bulkCreate([
+      { person_id, role: 'user', content: query },
+      { person_id, role: 'assistant', content: response.data.choices[0].message.content }
+    ]);
 
     const payload = {
       text: response.data.choices[0].message.content,
