@@ -131,13 +131,13 @@ const boltApp = new App({
   signingSecret: process.env[config.slack_secret],
 });
 
-app.post('/slack/events', (req, res) => {
+app.post('/slack/events', async (req, res) => {
   res.sendStatus(200); // Immediately respond with a 200 OK status to acknowledge the request
 
   console.log(req.body)
-  
+
   try {
-    boltApp.processEvent(req.body);
+    await boltApp.processEvent(req.body);
   } catch (error) {
     console.error(`Error processing Slack event: ${error}`);
   }
@@ -148,7 +148,7 @@ app.post('/slack/events', (req, res) => {
 boltApp.event('app_mention', async ({ event, say }) => {
   try {
     // Perform the API call or any other logic based on the mention event
-    const response = await yourApiCall(); // Replace with your own API call
+    const response = await makeAPICall(); // Replace with your own API call
 
     console.log("HIIIIIIIIII")
 
