@@ -117,7 +117,9 @@ app.post('/chats/:person_id', async (req, res) => {
 const slackClient = new WebClient(process.env[config.slack_client]);
 
 // Create an instance of the Slack event adapter
-const slackEvents = createEventAdapter(process.env[config.slack_secret]);
+const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET, {
+  includeBody: false, // Skip request body parsing
+});
 
 app.use('/slack/events', slackEvents.requestListener());
 
