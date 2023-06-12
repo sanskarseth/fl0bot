@@ -205,7 +205,7 @@ async function runSlackBotApp() {
     runSlackBotApp();
 
     // Run the Express app
-    runExpressApp();
+    app();
   } catch (error) {
     console.error('Error occurred:', error);
   }
