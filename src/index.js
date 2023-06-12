@@ -11,6 +11,7 @@ app.get('/', (req, res) => {
 app.post('/persons/', async (req, res) => {
   const person = req.body;
   try {
+    console.log("Person", person)
     const dbUser = await Person.create(person);
     res.json(dbUser);
   } catch (error) {
