@@ -50,7 +50,9 @@ app.post('/chats/:person_id', async (req, res) => {
   const { person_id } = req.params;
   const { query } = req.body;
 
-  console.log(req.params, req.body)
+  const users = await Person.findAll();
+
+  return res.json(users)
 
   try {
     const dbUser = await Person.findOne({ where: { person_id: person_id } });
