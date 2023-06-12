@@ -3,7 +3,7 @@ const { sequelize, Chat, Person } = require('./models');
 const e = require('express');
 
 const process = require('process');
-const config = require(__dirname + '/../config/index.js')[env];
+const config = require('./src/config/index.js')[env];
 
 const app = express()
 app.use(express.json());
