@@ -131,22 +131,31 @@ const boltApp = new App({
   signingSecret: process.env[config.slack_secret],
 });
 
+app.post('/slack/events', (req, res) => {
+  res.sendStatus(200); // Immediately respond with a 200 OK status to acknowledge the request
+
+  try {
+    boltApp.processEvent(req.body);
+  } catch (error) {
+    console.error(`Error processing Slack event: ${error}`);
+  }
+});
+
 
 // Listen for mentions
 boltApp.event('app_mention', async ({ event, say }) => {
-
-  console.log("HIIIIIII")
   try {
-    // Trigger your API call here
-    const apiResponse = await makeAPICall();
-    const replyMessage = apiResponse; // Customize the reply message as needed
+    // Perform the API call or any other logic based on the mention event
+    const response = await yourApiCall(); // Replace with your own API call
 
-    console.log(replyMessage)
+    console.log("HIIIIIIIIII")
 
-    // Reply to the mention
-    await say(replyMessage);
+    // Reply to the mention with the response
+    await say({
+      text: `API Response: ${response}`,
+    });
   } catch (error) {
-    console.error('API call error:', error);
+    console.error(`Error handling app_mention event: ${error}`);
   }
 });
 
