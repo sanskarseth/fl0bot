@@ -5,6 +5,7 @@ module.exports = {
     "bot_system" : "BOT_SYSTEM",
     "slack_client" : "SLACK_CLIENT",
     "slack_secret" : "SLACK_SECRET",
+    "slack_webhook" : "SLACK_WEBHOOK",
     synchronize: true
   },
   "development": {
@@ -13,6 +14,7 @@ module.exports = {
     "bot_system" : "BOT_SYSTEM",
     "slack_client" : "SLACK_CLIENT",
     "slack_secret" : "SLACK_SECRET",
+    "slack_webhook" : "SLACK_WEBHOOK",
     synchronize: true
   },
   "production": {
@@ -21,6 +23,7 @@ module.exports = {
     "bot_system" : "BOT_SYSTEM",
     "slack_client" : "SLACK_CLIENT",
     "slack_secret" : "SLACK_SECRET",
+    "slack_webhook" : "SLACK_WEBHOOK",
     synchronize: true
   }
 }

@@ -185,7 +185,7 @@ async function handleAppMention({event}) {
     };
 
     axios
-    .post('https://hooks.slack.com/services/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', payload)
+    .post(process.env[config.slack_webhook], payload)
     .then(() => {
       res.status(200).json({ message: 'Message sent successfully' });
     })
