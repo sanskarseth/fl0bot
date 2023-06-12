@@ -9,7 +9,7 @@ const config = require(__dirname + '/config/index.js')[env];
 const app = express()
 app.use(express.json());
 
-const {OpenAIApi} = require('openai');
+const {Configuration, OpenAIApi} = require('openai');
 
 const configuration = new Configuration({
   apiKey: process.env[config.openai_api_key],
