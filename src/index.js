@@ -91,6 +91,8 @@ app.post('/chats/:person_id', async (req, res) => {
       messages: chatsGpt,
     });
 
+    console.log(response.data)
+
     const dbChat1 = await Chat.create({ person_id, role: 'user', content: query });
 
     const dbChat = await Chat.create({
