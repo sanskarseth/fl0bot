@@ -124,34 +124,27 @@ app.post('/slack/action-endpoint', (req, res) => {
   }
 });
 
-// const { App } = require('@slack/bolt');
+const { App } = require('@slack/bolt');
 
-// const slackBotApp = new App({
-//   token: process.env[config.slack_client],
-//   signingSecret: process.env[config.slack_secret],
-// });
+const boltApp = new App({
+  token: process.env[config.slack_client],
+  signingSecret: process.env[config.slack_secret],
+});
 
 
-// slackBotApp.event('message', async ({ event }) => {
-//   try {
-//     // Handle the Slack event here
-//     console.log('Received a message:', event.text);
-//   } catch (error) {
-//     console.error('Error handling Slack event:', error);
-//   }
-// });
+// Listen for mentions
+boltApp.event('app_mention', async ({ event, say }) => {
+  try {
+    // Trigger your API call here
+    const apiResponse = await makeAPICall();
+    const replyMessage = apiResponse; // Customize the reply message as needed
 
-// app.post('/slack/events', (req, res) => {
-//   const { challenge } = req.body;
-
-//   if (challenge) {
-//     // Respond to the challenge request
-//     res.send({ challenge });
-//   } else {
-//     // Return a success response
-//     res.sendStatus(200);
-//   }
-// });
+    // Reply to the mention
+    await say(replyMessage);
+  } catch (error) {
+    console.error('API call error:', error);
+  }
+});
 
 
 app.listen(port, async () => {
@@ -167,11 +160,13 @@ app.listen(port, async () => {
   }
 });
 
-// (async () => {
-//   try {
-//     await slackBotApp.start();
-//     console.log('Slack bot is running');
-//   } catch (error) {
-//     console.error('Error starting Slack bot:', error);
-//   }
-// })();
+(async () => {
+  await boltApp.start();
+  console.log('Bolt app is running');
+})();
+
+async function makeAPICall() {
+  // Perform your API logic here
+  // Return the result to be sent as a reply
+  return 'API call result';
+}
