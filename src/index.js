@@ -114,10 +114,10 @@ app.post('/chats/:person_id', async (req, res) => {
 });
 
 // Create an instance of the Slack client with your token
-const slackClient = new WebClient(process.env.process.env[config.slack_client]);
+const slackClient = new WebClient(process.env[config.slack_client]);
 
 // Create an instance of the Slack event adapter
-const slackEvents = createEventAdapter(process.env.process.env[config.slack_secret]);
+const slackEvents = createEventAdapter(process.env[config.slack_secret]);
 
 app.use('/slack/events', slackEvents.requestListener());
 
