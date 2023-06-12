@@ -143,7 +143,8 @@ app.post('/slack/action-endpoint', async (req, res) => {
 
     try {
       console.log("event called")
-      await boltApp.processEvent({event: req.body});
+      // await boltApp.processEvent(req.body);
+      console.log(req.body)
     } catch (error) {
       console.error(`Error processing Slack event: ${error}`);
     }
