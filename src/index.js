@@ -8,7 +8,7 @@ app.use(express.json());
 
 const { openai } = require('@openai/api');
 
-const openai = new openai({
+const openaiInstance = new openai({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
@@ -60,7 +60,7 @@ app.post('/chats/:user_id', async (req, res) => {
     const chatsGpt = chats.map((item) => ({ role: item.role, content: item.content }));
     chatsGpt.push({ role: 'user', content: query.query });
 
-    const response = await openai.ChatCompletion.create({
+    const response = await openaiInstance.ChatCompletion.create({
       model: 'gpt-3.5-turbo',
       messages: chatsGpt,
     });
