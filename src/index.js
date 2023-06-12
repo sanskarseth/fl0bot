@@ -6,6 +6,8 @@ const process = require('process');
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/config/index.js')[env];
 
+const axios = require('axios');
+
 const app = express()
 app.use(express.json());
 
@@ -149,8 +151,8 @@ async function handleAppMention({event}) {
   const mentionRegex = /<@[\w\d]+>/g; // Regex pattern to match the mention
   const msg = event.text.replace(mentionRegex, '');
 
-  const { person_id } = event.user;
-  const { query } = msg;
+  const person_id = event.user;
+  const query = msg;
 
   try {
     const dbUser = await Person.findOne({ where: { person_id: person_id }, raw: true });
@@ -176,6 +178,19 @@ async function handleAppMention({event}) {
       person_id,
       role: 'assistant',
       content: response.data.choices[0].message.content,
+    });
+
+    const payload = {
+      text: response.data.choices[0].message.content,
+    };
+
+    axios
+    .post('https://hooks.slack.com/services/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', payload)
+    .then(() => {
+      res.status(200).json({ message: 'Message sent successfully' });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: 'Failed to send message' });
     });
 
     return response.data.choices[0].message.content ;
