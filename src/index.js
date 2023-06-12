@@ -50,6 +50,8 @@ app.post('/chats/:person_id', async (req, res) => {
   const { person_id } = req.params;
   const { query } = req.body;
 
+  console.log(req.params, req.body)
+
   try {
     const dbUser = await Person.findByPk(person_id);
 
