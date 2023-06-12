@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
       chat_id: {
         type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true,
+        defaultValue: Sequelize.UUIDV4,
       },
       person_id: {
         type: DataTypes.UUID,
