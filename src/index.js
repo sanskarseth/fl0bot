@@ -144,6 +144,8 @@ app.post('/slack/action-endpoint', async (req, res) => {
 
 async function handleAppMention(event) {
 
+  console.log("EVENT", event)
+
   const mentionRegex = /<@[\w\d]+>/g; // Regex pattern to match the mention
   const msg = event.text.replace(mentionRegex, '');
 
