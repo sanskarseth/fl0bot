@@ -1,7 +1,9 @@
-require('dotenv').config();
 const express = require('express')
 const { sequelize, Chat, Person } = require('./models');
 const e = require('express');
+
+const process = require('process');
+const config = require(__dirname + '/../config/index.js')[env];
 
 const app = express()
 app.use(express.json());
@@ -9,7 +11,7 @@ app.use(express.json());
 const { openai } = require('@openai/api');
 
 const openaiInstance = new openai({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env[config.openai_api_key]
 });
 
 
