@@ -9,11 +9,11 @@ const config = require(__dirname + '/config/index.js')[env];
 const app = express()
 app.use(express.json());
 
-const openai = require('openai');
+const {OpenAIApi} = require('openai');
 
-const apiClient = new openai.OpenAIApiClient({
-  apiKey: process.env[config.openai_api_key],
-});
+const apiClient = new OpenAIApi(
+  process.env[config.openai_api_key],
+);
 
 
 const port = process.env.PORT ?? 3000;
