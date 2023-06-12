@@ -184,7 +184,7 @@ async function handleAppMention({event}) {
       text: response.data.choices[0].message.content,
     };
 
-    axios
+    await axios
     .post(process.env[config.slack_webhook], payload)
     .then(() => {
       res.status(200).json({ message: 'Message sent successfully' });
@@ -193,7 +193,7 @@ async function handleAppMention({event}) {
       res.status(500).json({ error: 'Failed to send message' });
     });
 
-    return response.data.choices[0].message.content ;
+    // return response.data.choices[0].message.content ;
   } catch (error) {
     console.log("ERROR",error)
     return 'Failed to process chat';
