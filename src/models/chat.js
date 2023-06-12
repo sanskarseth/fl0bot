@@ -1,7 +1,6 @@
 'use strict';
 
 const { Sequelize, DataTypes } = require('sequelize');
-const { v4: uuidv4 } = require('uuid');
 
 module.exports = (sequelize) => {
   const Chat = sequelize.define(
@@ -15,10 +14,6 @@ module.exports = (sequelize) => {
       person_id: {
         type: DataTypes.STRING,
         allowNull: false,
-        references: {
-          model: 'persons', // Referencing the 'persons' table
-          key: 'person_id', // Referencing the 'person_id' column
-        },
       },
       role: {
         type: DataTypes.STRING,
