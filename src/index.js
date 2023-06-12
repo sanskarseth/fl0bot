@@ -3,6 +3,7 @@ const { sequelize, Chat, Person } = require('./models');
 const e = require('express');
 
 const process = require('process');
+const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/config/index.js')[env];
 
 const app = express()
