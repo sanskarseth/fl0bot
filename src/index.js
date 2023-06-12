@@ -130,7 +130,7 @@ app.post('/slack/events', async (req, res) => {
 });
 
 
-app.post('/slack/action-endpoint', (req, res) => {
+app.post('/slack/action-endpoint', async (req, res) => {
   const { challenge } = req.body;
   
   if (challenge) {
@@ -140,6 +140,12 @@ app.post('/slack/action-endpoint', (req, res) => {
     // Access the event data from the req.body object
     
     // Return a successful response
+
+    try {
+      await boltApp.processEvent(req.body);
+    } catch (error) {
+      console.error(`Error processing Slack event: ${error}`);
+    }
 
     console.log('Event received Event received')
 
