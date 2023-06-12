@@ -110,20 +110,6 @@ app.post('/chats/:person_id', async (req, res) => {
   }
 });
 
-app.post('/slack/action-endpoint', (req, res) => {
-  const { challenge } = req.body;
-  
-  if (challenge) {
-    res.status(200).send(challenge);
-  } else {
-    // Handle other event types and trigger actions based on your requirements
-    // Access the event data from the req.body object
-    
-    // Return a successful response
-    res.status(200).json({ message: 'Event received' });
-  }
-});
-
 const { App } = require('@slack/bolt');
 
 const boltApp = new App({
@@ -140,6 +126,24 @@ app.post('/slack/events', async (req, res) => {
     await boltApp.processEvent(req.body);
   } catch (error) {
     console.error(`Error processing Slack event: ${error}`);
+  }
+});
+
+
+app.post('/slack/action-endpoint', (req, res) => {
+  const { challenge } = req.body;
+  
+  if (challenge) {
+    res.status(200).send(challenge);
+  } else {
+    // Handle other event types and trigger actions based on your requirements
+    // Access the event data from the req.body object
+    
+    // Return a successful response
+
+    console.log('Event received Event received')
+
+    res.status(200).json({ message: 'Event received' });
   }
 });
 
