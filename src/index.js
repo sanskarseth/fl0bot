@@ -134,6 +134,8 @@ const boltApp = new App({
 
 // Listen for mentions
 boltApp.event('app_mention', async ({ event, say }) => {
+
+  console.log("HIIIIIII")
   try {
     // Trigger your API call here
     const apiResponse = await makeAPICall();
