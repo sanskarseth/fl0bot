@@ -35,7 +35,8 @@ app.post('/persons/', async (req, res) => {
 
 app.get('/persons/', async (req, res) => {
   try {
-    const persons = await Person.findAll();
+    const persons = await Person.findAll({ raw: true });
+    console.log(persons);
     return res.json(persons)
   } catch (error) {
     console.log("ERROR",error)
