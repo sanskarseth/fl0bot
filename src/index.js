@@ -139,6 +139,8 @@ boltApp.event('app_mention', async ({ event, say }) => {
     const apiResponse = await makeAPICall();
     const replyMessage = apiResponse; // Customize the reply message as needed
 
+    console.log(replyMessage)
+
     // Reply to the mention
     await say(replyMessage);
   } catch (error) {
