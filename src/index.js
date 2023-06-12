@@ -47,19 +47,19 @@ app.post('/chats/', async (req, res) => {
   }
 });
 
-app.post('/chats/:user_id', async (req, res) => {
-  const { user_id } = req.params;
+app.post('/chats/:person_id', async (req, res) => {
+  const { person_id } = req.params;
   const { query } = req.body;
 
   try {
-    const dbUser = await User.findByPk(user_id);
+    const dbUser = await Person.findByPk(person_id);
 
     if (!dbUser) {
       res.status(404).json({ error: 'User not found' });
       return;
     }
 
-    const chats = await Chat.findAll({ where: { user_id }, order: [['time_created', 'ASC']] });
+    const chats = await Chat.findAll({ where: { person_id }, order: [['time_created', 'ASC']] });
 
     const chatsGpt = chats.map((item) => ({ role: item.role, content: item.content }));
     chatsGpt.push({ role: 'user', content: query.query });
@@ -69,16 +69,17 @@ app.post('/chats/:user_id', async (req, res) => {
       messages: chatsGpt,
     });
 
-    const dbChat1 = await Chat.create({ user_id, role: 'user', content: query.query });
+    const dbChat1 = await Chat.create({ person_id, role: 'user', content: query.query });
 
     const dbChat = await Chat.create({
-      user_id,
+      person_id,
       role: 'assistant',
       content: response.choices[0].message.content,
     });
 
     res.json(response.choices[0].message.content);
   } catch (error) {
+    console.log("ERROR",error)
     res.status(500).json({ error: 'Failed to process chat' });
   }
 });
