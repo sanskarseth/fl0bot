@@ -91,17 +91,17 @@ app.post('/chats/:person_id', async (req, res) => {
       messages: chatsGpt,
     });
 
-    console.log(response.data)
+    console.log(response.data.choices[0].message.content)
 
     const dbChat1 = await Chat.create({ person_id, role: 'user', content: query });
 
     const dbChat = await Chat.create({
       person_id,
       role: 'assistant',
-      content: response.data.choices[0].text,
+      content: response.data.choices[0].message.content,
     });
 
-    res.json(response.data.choices[0].text);
+    res.json(response.data.choices[0].message.content);
   } catch (error) {
     console.log("ERROR",error)
     res.status(500).json({ error: 'Failed to process chat' });
