@@ -140,6 +140,18 @@ slackEvents.on('message', async (event) => {
   }
 });
 
+app.post('/slack/events', (req, res) => {
+  const { challenge } = req.body;
+
+  if (challenge) {
+    // Respond to the challenge request
+    res.send({ challenge });
+  } else {
+    // Return a success response
+    res.sendStatus(200);
+  }
+});
+
 
 // app.post('/slack/events', async (request, response) => {
 //   const payload = request.body;
