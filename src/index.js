@@ -81,7 +81,7 @@ app.post('/chats/:person_id', async (req, res) => {
       return;
     }
 
-    const chats = await Chat.findAll({ where: { person_id }, order: [['time_created', 'ASC']], raw: true });
+    const chats = await Chat.findAll({ where: { person_id }, order: [['time_created', 'DSC']], limit: 5, raw: true });
 
     const chatsGpt = chats.map((item) => ({ role: item.role, content: item.content }));
     chatsGpt.push({ role: 'user', content: query });
