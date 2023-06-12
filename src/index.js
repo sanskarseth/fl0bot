@@ -9,11 +9,12 @@ const config = require(__dirname + '/config/index.js')[env];
 const app = express()
 app.use(express.json());
 
-const openai = require('openai');
+const {OpenAIApi} = require('openai');
 
-const openaiInstance = new openai({
-  apiKey: process.env[config.openai_api_key]
+const configuration = new Configuration({
+  apiKey: process.env[config.openai_api_key],
 });
+const openai = new OpenAIApi(configuration);
 
 
 const port = process.env.PORT ?? 3000;
@@ -63,7 +64,7 @@ app.post('/chats/:user_id', async (req, res) => {
     const chatsGpt = chats.map((item) => ({ role: item.role, content: item.content }));
     chatsGpt.push({ role: 'user', content: query.query });
 
-    const response = await openaiInstance.ChatCompletion.create({
+    const response = await openai.ChatCompletion.create({
       model: 'gpt-3.5-turbo',
       messages: chatsGpt,
     });
