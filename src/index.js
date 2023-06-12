@@ -81,10 +81,11 @@ async function handleAppMention({event}) {
     await axios
     .post(process.env[config.slack_webhook], payload)
     .then(() => {
-      res.status(200).json({ message: 'Message sent successfully' });
+      return 'Message sent successfully'
     })
     .catch((error) => {
-      res.status(500).json({ error: 'Failed to send message' });
+      console.log("ERROR",error)
+      return 'Failed to send message';
     });
   } catch (error) {
     console.log("ERROR",error)
