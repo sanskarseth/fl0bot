@@ -71,7 +71,7 @@ async function handleAppMention({event}) {
       { person_id, role: 'user', content: query },
       { person_id, role: 'assistant', content: response.data.choices[0].message.content }
     ]);
-    axios.post(process.env[config.slack_webhook], {text: response.data.choices[0].message.content});
+    // await axios.post(process.env[config.slack_webhook], {text: response.data.choices[0].message.content});
     return response.data.choices[0].message.content
   } catch (error) {
     console.log("ERROR",error)
